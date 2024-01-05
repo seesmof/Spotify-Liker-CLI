@@ -14,19 +14,6 @@ def getCollectionType() -> str:
     return answer["collection_type"]
 
 
-def getUrl(collectionType: str) -> str:
-    question = [
-        inquirer.Text(
-            "url",
-            message=f"Enter a Spotify {collectionType.title()} URL",
-            validate=lambda _, x: x != ""
-            and x.startswith(f"https://open.spotify.com/{collectionType.lower()}/"),
-        )
-    ]
-    answer = inquirer.prompt(question)
-    return answer["url"]
-
-
 def getAction() -> str:
     question = [
         inquirer.List(
@@ -40,6 +27,19 @@ def getAction() -> str:
     return answer["action"]
 
 
+def getUrl(collectionType: str) -> str:
+    question = [
+        inquirer.Text(
+            "url",
+            message=f"Enter a Spotify {collectionType.title()} URL",
+            validate=lambda _, x: x != ""
+            and x.startswith(f"https://open.spotify.com/{collectionType.lower()}/"),
+        )
+    ]
+    answer = inquirer.prompt(question)
+    return answer["url"]
+
+
 def checkAndPromptAuthData(authData: dict, variable: str) -> str:
     if authData[variable] != "":
         return authData[variable]
@@ -47,6 +47,7 @@ def checkAndPromptAuthData(authData: dict, variable: str) -> str:
         name = (
             variable.replace("_", " ").title().replace("Url", "URL").replace("Id", "ID")
         )
+
         question = [
             inquirer.Text(
                 variable,

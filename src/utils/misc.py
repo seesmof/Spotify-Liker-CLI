@@ -1,3 +1,8 @@
+from rich.console import Console
+
+console = Console()
+
+
 def getId(url: str) -> str:
     res = url.split("/")[-1]
     return res.split("?")[0]
@@ -7,7 +12,6 @@ def performActionOnTracks(
     tracks: list,
     collectionType: str,
     spotify: object,
-    console: object,
     action: str,
 ):
     try:
