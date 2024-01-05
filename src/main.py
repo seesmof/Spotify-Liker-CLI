@@ -61,13 +61,36 @@ def main() -> None:
 
     # Get the playlist using the Spotify object and the provided URL
     if collectionType == "Playlist":
-        container = spotify.playlist(url)
+        playlistId = getId(url)
+        try:
+            container = spotify.playlist(playlist_id=playlistId)
+        except Exception as e:
+            console.print(
+                f"[red]Failed to get playlist: '{e}'[/red]\n[grey0]Spotify might be down at the moment, check out status - https://downdetector.com/status/spotify/[/grey0]"
+            )
+            return
+
         tracks = container["tracks"]["items"]
     elif collectionType == "Album":
-        container = spotify.album(album_id=getId(url))
+        albumId = getId(url)
+        try:
+            container = spotify.album(album_id=albumId)
+        except Exception as e:
+            console.print(
+                f"[red]Failed to get album: '{e}'[/red]\n[grey0]Spotify might be down at the moment, check out status - https://downdetector.com/status/spotify/[/grey0]"
+            )
+            return
+
         tracks = container["tracks"]["items"]
     elif collectionType == "Artist":
-        container = spotify.artist_albums(artist_id=getId(url))
+        artistId = getId(url)
+        try:
+            container = spotify.artist_albums(artist_id=artistId)
+        except Exception as e:
+            console.print(
+                f"[red]Failed to get artist: '{e}'[/red]\n[grey0]Spotify might be down at the moment, check out status - https://downdetector.com/status/spotify/[/grey0]"
+            )
+
         tracks = []
         for album in container["items"]:
             albumObject = spotify.album(album_id=album["id"])
