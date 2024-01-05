@@ -12,66 +12,75 @@ from rich.traceback import install
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth, CacheFileHandler
 
-from utils import (
-    check_and_prompt_data,
-    get_action,
-    get_url,
-    load_json,
-    perfrom_action_on_tracks,
-    save_json,
-)
+from utils import *
 
 install()
 console = Console()
-current_dir = path.dirname(path.abspath(__file__))
-auth_file = path.join(current_dir, "..", "data", "auth.json")
-cache_file = path.join(current_dir, "..", "data", "cache.json")
+currentDir = path.dirname(path.abspath(__file__))
+authFile = path.join(currentDir, "..", "data", "auth.json")
+cacheFile = path.join(currentDir, "..", "data", "cache.json")
 scope = "user-library-modify"
 
 
-# TODO: Add options for Albums and Artists
 def main() -> None:
-    # Get the URL and action from the user
-    url = get_url()
-    action = get_action()
-
     # Load the authentication data from a JSON file
-    auth_data = load_json(path=auth_file)
+    authData = loadJson(path=authFile)
 
     # Extract the client ID, client secret, and redirect URL from the authentication data
-    client_id, client_secret, redirect_url = (
-        check_and_prompt_data(auth_data=auth_data, variable="client_id"),
-        check_and_prompt_data(auth_data=auth_data, variable="client_secret"),
-        check_and_prompt_data(auth_data=auth_data, variable="redirect_url"),
+    clientId, clientSecret, redirectUrl = (
+        checkAndPromptAuthData(authData=authData, variable="client_id"),
+        checkAndPromptAuthData(authData=authData, variable="client_secret"),
+        checkAndPromptAuthData(authData=authData, variable="redirect_url"),
     )
 
     # Save the extracted authentication data back to the JSON file
-    save_json(
-        path=auth_file,
+    saveJson(
+        path=authFile,
         data={
-            "client_id": client_id,
-            "client_secret": client_secret,
-            "redirect_url": redirect_url,
+            "client_id": clientId,
+            "client_secret": clientSecret,
+            "redirect_url": redirectUrl,
         },
     )
+
+    # Get collection type from the user
+    collectionType = getCollectionType()
+    url = getUrl(collectionType)
+    action = getAction()
 
     # Create a Spotify object with the extracted authentication details
     spotify = Spotify(
         auth_manager=SpotifyOAuth(
             scope=scope,
-            client_id=client_id,
-            client_secret=client_secret,
-            redirect_uri=redirect_url,
-            cache_handler=CacheFileHandler(cache_path=cache_file),
+            client_id=clientId,
+            client_secret=clientSecret,
+            redirect_uri=redirectUrl,
+            cache_handler=CacheFileHandler(cache_path=cacheFile),
         )
     )
 
     # Get the playlist using the Spotify object and the provided URL
-    playlist = spotify.playlist(url)
+    if collectionType == "Playlist":
+        container = spotify.playlist(url)
+        tracks = container["tracks"]["items"]
+    elif collectionType == "Album":
+        container = spotify.album(album_id=getId(url))
+        tracks = container["tracks"]["items"]
+    elif collectionType == "Artist":
+        container = spotify.artist_albums(artist_id=getId(url))
+        tracks = []
+        for album in container["items"]:
+            albumObject = spotify.album(album_id=album["id"])
+            currentTracks = albumObject["tracks"]["items"]
+            tracks.extend(currentTracks)
 
     # Perform the specified action on the tracks in the playlist
-    perfrom_action_on_tracks(
-        playlist=playlist, spotify=spotify, console=console, action=action
+    performActionOnTracks(
+        tracks=tracks,
+        collectionType=collectionType,
+        spotify=spotify,
+        console=console,
+        action=action,
     )
 
 
