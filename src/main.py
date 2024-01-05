@@ -59,51 +59,42 @@ def main() -> None:
         )
     )
 
+    # Declare necessary variables like collection ID, tracks holder and error hint message
+    collectionId = getId(url)
+    tracks = []
+    errorHintMessage = "\n[grey0]Spotify might be down at the moment, check out status - https://downdetector.com/status/spotify/[/grey0]"
+
     if collectionType == "Playlist":
-        # Get playlist ID
-        playlistId = getId(url)
         # Try creating a Spotify container
         try:
-            container = spotify.playlist(playlist_id=playlistId)
+            container = spotify.playlist(playlist_id=collectionId)
         except Exception as e:
-            console.print(
-                f"[red]Failed to get playlist: '{e}'[/red]\n[grey0]Spotify might be down at the moment, check out status - https://downdetector.com/status/spotify/[/grey0]"
-            )
+            console.print(f"[red]Failed to get playlist: '{e}'[/red]{errorHintMessage}")
             # TODO Delete cache.json file before quitting cause it might be the reason for this error
             return
 
         # Extract all the tracks from the playlist
         tracks = container["tracks"]["items"]
     elif collectionType == "Album":
-        # Get album ID
-        albumId = getId(url)
         # Try creating a Spotify container
         try:
-            container = spotify.album(album_id=albumId)
+            container = spotify.album(album_id=collectionId)
         except Exception as e:
-            console.print(
-                f"[red]Failed to get album: '{e}'[/red]\n[grey0]Spotify might be down at the moment, check out status - https://downdetector.com/status/spotify/[/grey0]"
-            )
+            console.print(f"[red]Failed to get album: '{e}'[/red]{errorHintMessage}")
             # TODO Delete cache.json file before quitting cause it might be the reason for this error
             return
 
         # Extract all the tracks from the album
         tracks = container["tracks"]["items"]
     elif collectionType == "Artist":
-        # Get artist ID
-        artistId = getId(url)
         # Try creating a Spotify container
         try:
-            container = spotify.artist_albums(artist_id=artistId)
+            container = spotify.artist_albums(artist_id=collectionId)
         except Exception as e:
-            console.print(
-                f"[red]Failed to get artist: '{e}'[/red]\n[grey0]Spotify might be down at the moment, check out status - https://downdetector.com/status/spotify/[/grey0]"
-            )
+            console.print(f"[red]Failed to get artist: '{e}'[/red]{errorHintMessage}")
             # TODO Delete cache.json file before quitting cause it might be the reason for this error
             return
 
-        # Declare an empty list to store the tracks
-        tracks = []
         # Loop over all albums in the given artist
         for album in container["items"]:
             # Create a Spotify container for the album
