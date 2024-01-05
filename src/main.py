@@ -59,9 +59,10 @@ def main() -> None:
         )
     )
 
-    # Get the playlist using the Spotify object and the provided URL
     if collectionType == "Playlist":
+        # Get playlist ID
         playlistId = getId(url)
+        # Try creating a Spotify container
         try:
             container = spotify.playlist(playlist_id=playlistId)
         except Exception as e:
@@ -70,9 +71,12 @@ def main() -> None:
             )
             return
 
+        # Extract all the tracks from the playlist
         tracks = container["tracks"]["items"]
     elif collectionType == "Album":
+        # Get album ID
         albumId = getId(url)
+        # Try creating a Spotify container
         try:
             container = spotify.album(album_id=albumId)
         except Exception as e:
@@ -81,9 +85,12 @@ def main() -> None:
             )
             return
 
+        # Extract all the tracks from the album
         tracks = container["tracks"]["items"]
     elif collectionType == "Artist":
+        # Get artist ID
         artistId = getId(url)
+        # Try creating a Spotify container
         try:
             container = spotify.artist_albums(artist_id=artistId)
         except Exception as e:
@@ -92,10 +99,15 @@ def main() -> None:
             )
             return
 
+        # Declare an empty list to store the tracks
         tracks = []
+        # Loop over all albums in the given artist
         for album in container["items"]:
+            # Create a Spotify container for the album
             albumObject = spotify.album(album_id=album["id"])
+            # Extract all the tracks from the album
             currentTracks = albumObject["tracks"]["items"]
+            # Append the tracks to the list
             tracks.extend(currentTracks)
 
     # Perform the specified action on the tracks in the playlist
