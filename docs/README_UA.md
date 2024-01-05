@@ -21,7 +21,7 @@
 
 ### Інструкція зі встановлення
 
-- Завантажте [останню версію](https://github.com/seesmof/spotify-playlist-liker/releases) програми
+- Завантажте [останню версію](https://github.com/seesmof/spotify-batch-liker-cli/archive/refs/tags/v1.0.0.zip) програми
   - Переконайтеся, що у вас встановлено Python 3.10 або новішої версії. Якщо ні, будь ласка, зробіть це - [остання версія](https://www.python.org/downloads/)
 - Розархівуйте отриманий архів
 - Відкрийте та запустіть файл `Run.bat`.

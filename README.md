@@ -23,7 +23,7 @@
 
 ### Installation Instructions
 
-- Download [latest version](https://github.com/seesmof/spotify-playlist-liker/releases) of the app
+- Download [latest version](https://github.com/seesmof/spotify-batch-liker-cli/archive/refs/tags/v1.0.0.zip) of the app
   - Make sure you have Python 3.10 or later installed. If not, please do so - [latest version](https://www.python.org/downloads/)
 - Unarchive the archive you got
 - Open and run `Run.bat` file
