@@ -41,7 +41,7 @@ To use this app, you will need to create a Spotify application in `Spotify for D
 4. Fill in the required information for your app, including the name and description.
 5. After creating the app, you will be provided with a `client ID` and a `client secret`. These are unique identifiers for your app.
 6. Make note of the `client ID` and `client secret` as you will need them later.
-7. Set the `redirect URL` for your app. This is the URL that Spotify will redirect to after the user grants permission to your app.
+7. Set the `redirect URL` for your app. This is the URL that Spotify will redirect to after the user grants permission to your app. I recommend setting it to `http://localhost:8080`.
 8. Once you have completed these steps, you can use the `client ID`, `client secret`, and `redirect URL` in your code.
 
 #### Confirming authorizaiton
