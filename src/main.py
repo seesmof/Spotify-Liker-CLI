@@ -6,7 +6,7 @@ in list: Action - Like | Dislike
 out: Message - Success | Error
 """
 
-from os import path
+from os import path, remove
 from rich.console import Console
 from rich.traceback import install
 from spotipy import Spotify
@@ -70,7 +70,8 @@ def main() -> None:
             container = spotify.playlist(playlist_id=collectionId)
         except Exception as e:
             console.print(f"[red]Failed to get playlist: '{e}'[/red]{errorHintMessage}")
-            # TODO Delete cache.json file before quitting cause it might be the reason for this error
+            # Try removing cache file and see if it helps
+            remove(cacheFile)
             return
 
         # Extract all the tracks from the playlist
@@ -81,7 +82,8 @@ def main() -> None:
             container = spotify.album(album_id=collectionId)
         except Exception as e:
             console.print(f"[red]Failed to get album: '{e}'[/red]{errorHintMessage}")
-            # TODO Delete cache.json file before quitting cause it might be the reason for this error
+            # Try removing cache file and see if it helps
+            remove(cacheFile)
             return
 
         # Extract all the tracks from the album
@@ -92,7 +94,8 @@ def main() -> None:
             container = spotify.artist_albums(artist_id=collectionId)
         except Exception as e:
             console.print(f"[red]Failed to get artist: '{e}'[/red]{errorHintMessage}")
-            # TODO Delete cache.json file before quitting cause it might be the reason for this error
+            # Try removing cache file and see if it helps
+            remove(cacheFile)
             return
 
         # Loop over all albums in the given artist
