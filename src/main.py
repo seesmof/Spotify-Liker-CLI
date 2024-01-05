@@ -69,6 +69,7 @@ def main() -> None:
             console.print(
                 f"[red]Failed to get playlist: '{e}'[/red]\n[grey0]Spotify might be down at the moment, check out status - https://downdetector.com/status/spotify/[/grey0]"
             )
+            # TODO Delete cache.json file before quitting cause it might be the reason for this error
             return
 
         # Extract all the tracks from the playlist
@@ -83,6 +84,7 @@ def main() -> None:
             console.print(
                 f"[red]Failed to get album: '{e}'[/red]\n[grey0]Spotify might be down at the moment, check out status - https://downdetector.com/status/spotify/[/grey0]"
             )
+            # TODO Delete cache.json file before quitting cause it might be the reason for this error
             return
 
         # Extract all the tracks from the album
@@ -97,6 +99,7 @@ def main() -> None:
             console.print(
                 f"[red]Failed to get artist: '{e}'[/red]\n[grey0]Spotify might be down at the moment, check out status - https://downdetector.com/status/spotify/[/grey0]"
             )
+            # TODO Delete cache.json file before quitting cause it might be the reason for this error
             return
 
         # Declare an empty list to store the tracks
