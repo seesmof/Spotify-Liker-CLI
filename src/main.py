@@ -90,6 +90,7 @@ def main() -> None:
             console.print(
                 f"[red]Failed to get artist: '{e}'[/red]\n[grey0]Spotify might be down at the moment, check out status - https://downdetector.com/status/spotify/[/grey0]"
             )
+            return
 
         tracks = []
         for album in container["items"]:
